@@ -35,21 +35,28 @@ loggers.add('error-logger', {
 		return `<${moment().format('DD.MM.YY HH:mm:ss')}> [${level}]: ${message}`;
 	}),
 });
+//#endregion
 
+// Set up the basicLogger to show main information
 const basicLogger = loggers.get('basic-logger');
 
+// Initialize express server
 const app: Application = express();
+// Set the port to the given env or 8181
 const port: number = Number(process.env.PORT) || 8181;
 
+// Do some configurations
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
+// Set up all routes to be monitored
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
 	basicLogger.info(`[${req.method} - ${req.ip}] ${req.originalUrl}`);
 	next();
 });
 
+// If no previous route matched, return an error page
 app.all('*', (req: Request, res: Response) => {
 	return res.status(404).send({
 		Error: { Messages: [{ location: 'url', msg: 'File not found' }] },
