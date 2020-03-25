@@ -24,3 +24,6 @@ dist/
 
 # Optional eslint cache
 .eslintcache
+
+# Enviroment file
+.env
