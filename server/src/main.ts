@@ -42,6 +42,17 @@ const errorLogger = loggers.get('error-logger');
 
 //#region Setting up database import
 import * as db from './models';
+import {
+	AccountLoginController,
+	AccountCheckController,
+	AccountRegisterController,
+	AccountUpdateController,
+} from './routes/account';
+import {
+	TweetDeleteController,
+	TweetSendController,
+	TweetUpdateController,
+} from './routes/tweet';
 //#endregion
 
 // Initialize express server
@@ -66,6 +77,19 @@ db.sequelize
 				basicLogger.info(`[${req.method} - ${req.ip}] ${req.originalUrl}`);
 				next();
 			});
+
+			// Initialize all routes
+			app.use('/account', [
+				AccountCheckController,
+				AccountLoginController,
+				AccountRegisterController,
+				AccountUpdateController,
+			]);
+			app.use('/tweet', [
+				TweetDeleteController,
+				TweetSendController,
+				TweetUpdateController,
+			]);
 
 			// If no previous route matched, return an error page
 			app.all('*', (req: Request, res: Response) => {
