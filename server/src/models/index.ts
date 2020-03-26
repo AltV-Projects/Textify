@@ -1,5 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import { loggers } from 'winston';
+import { Account } from './account';
+import { Tweet } from './tweet';
 
 const debugLogger = loggers.get('debug-logger');
 
@@ -9,6 +11,6 @@ export const sequelize = new Sequelize({
 	database: process.env.DB_DB,
 	host: process.env.DB_HOST,
 	dialect: 'mysql',
-	models: [],
+	models: [Account, Tweet],
 	logging: (msg) => debugLogger.debug(msg),
 });
