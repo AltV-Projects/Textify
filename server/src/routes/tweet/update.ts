@@ -3,7 +3,7 @@ import { Router, Request, Response } from 'express';
 
 const router: Router = Router();
 
-router.post('/send', (req: Request, res: Response) => {
+router.put('/send', (req: Request, res: Response) => {
 	// Import the basic & error logger
 	/* const basicLogger = loggers.get('basic-logger');
 	const errorLogger = loggers.get('error-logger'); */
