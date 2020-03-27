@@ -86,12 +86,20 @@ router.post(
 				Number(process.env.ROUNDS),
 			);
 
-			const userResult = Account.create({
+			const userResult = await Account.create({
 				username: req.body.username,
 				password: hash,
 			});
 
-			return res.status(200).json({ data: userResult });
+			return res
+				.status(200)
+				.json({
+					data: {
+						id: userResult.id,
+						username: userResult.username,
+						createdAt: userResult.createdAt,
+					},
+				});
 		} catch (err) {
 			// If something went wrong, we need to inform the user and ofc. ourself
 			errorLogger.error(err.stack);
