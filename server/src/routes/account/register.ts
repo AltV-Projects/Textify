@@ -1,6 +1,5 @@
 import { Router, Request, Response } from 'express';
 import { loggers } from 'winston';
-// import { hashSync } from 'bcryptjs';
 import { body, validationResult } from 'express-validator';
 import { Account } from '../../models/account';
 import { hashSync } from 'bcryptjs';
