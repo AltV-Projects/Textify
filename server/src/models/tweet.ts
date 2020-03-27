@@ -14,8 +14,8 @@ export class Tweet extends Model<Tweet> {
 
 	@ForeignKey(() => Account)
 	@Column
-	account!: number;
+	createdBy!: number;
 
 	@BelongsTo(() => Account)
-	accountID!: number;
+	createdByID!: number;
 }
