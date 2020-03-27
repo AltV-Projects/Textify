@@ -69,7 +69,7 @@ router.post(
 			// If a user account exists with the given username, send an error
 			if (userCheck)
 				// Send back status 412 (weil iSeven es so wollte!) and an error object
-				return res.status(412).send({
+				return res.status(412).json({
 					Error: {
 						Messages: [
 							{

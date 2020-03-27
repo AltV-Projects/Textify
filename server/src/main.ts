@@ -93,7 +93,7 @@ db.sequelize
 
 			// If no previous route matched, return an error page
 			app.all('*', (req: Request, res: Response) => {
-				return res.status(404).send({
+				return res.status(404).json({
 					Error: {
 						Messages: [{ location: 'url', msg: 'File or resource not found' }],
 					},
