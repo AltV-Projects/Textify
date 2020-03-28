@@ -20,8 +20,8 @@ export class Token extends Model<Token> {
 
 	@ForeignKey(() => Account)
 	@Column
-	createdBy!: number;
+	createdByID!: number;
 
 	@BelongsTo(() => Account)
-	createdByID!: number;
+	createdBy!: Account;
 }
