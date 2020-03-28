@@ -85,14 +85,14 @@ router.post(
 			// Check if a session exist, if not create one
 			const [token, created] = await Token.findOrCreate({
 				where: {
-					createdBy: userAccount.id,
+					createdByID: userAccount.id,
 				},
 				defaults: {
 					token: Math.random()
 						.toString(36)
 						.substring(7),
 					validUntil: timeout,
-					createdBy: userAccount.id,
+					createdByID: userAccount.id,
 				},
 			});
 
