@@ -27,3 +27,6 @@ dist/
 
 # Enviroment file
 .env
+
+# Docker data dir
+data/
