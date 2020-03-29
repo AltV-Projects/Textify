@@ -64,48 +64,59 @@ const port: number = Number(process.env.PORT) || 8181;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-db.sequelize
-	.authenticate()
-	.then(() => {
-		// Logging that it was successfull
-		basicLogger.info('Database connection successfull');
 
-		// Sync database models
-		db.sequelize.sync().then(() => {
-			// Set up all routes to be monitored
-			app.all('*', (req: Request, res: Response, next: NextFunction) => {
-				basicLogger.info(`[${req.method} - ${req.ip}] ${req.originalUrl}`);
-				next();
-			});
+function setupDatabase(): void {
+	db.sequelize
+		.authenticate()
+		.then(() => {
+			// Logging that it was successfull
+			basicLogger.info('Database connection successfull');
 
-			// Initialize all routes
-			app.use('/account', [
-				AccountCheckController,
-				AccountLoginController,
-				AccountRegisterController,
-				AccountUpdateController,
-			]);
-			app.use('/tweet', [
-				TweetDeleteController,
-				TweetSendController,
-				TweetUpdateController,
-			]);
+			// Sync database models
+			db.sequelize.sync().then(() => {
+				// Set up all routes to be monitored
+				app.all('*', (req: Request, res: Response, next: NextFunction) => {
+					basicLogger.info(`[${req.method} - ${req.ip}] ${req.originalUrl}`);
+					next();
+				});
 
-			// If no previous route matched, return an error page
-			app.all('*', (req: Request, res: Response) => {
-				return res.status(404).json({
-					Error: {
-						Messages: [{ location: 'url', msg: 'File or resource not found' }],
-					},
+				// Initialize all routes
+				app.use('/account', [
+					AccountCheckController,
+					AccountLoginController,
+					AccountRegisterController,
+					AccountUpdateController,
+				]);
+				app.use('/tweet', [
+					TweetDeleteController,
+					TweetSendController,
+					TweetUpdateController,
+				]);
+
+				// If no previous route matched, return an error page
+				app.all('*', (req: Request, res: Response) => {
+					return res.status(404).json({
+						Error: {
+							Messages: [
+								{ location: 'url', msg: 'File or resource not found' },
+							],
+						},
+					});
+				});
+
+				// Start listening for connections on the given port
+				app.listen(port, () => {
+					basicLogger.info(`Listening at http://localhost:${port}/`);
 				});
 			});
+		})
+		.catch((err: any) => {
+			// Log the error
+			errorLogger.error(err.stack);
 
-			// Start listening for connections on the given port
-			app.listen(port, () => {
-				basicLogger.info(`Listening at http://localhost:${port}/`);
-			});
+			// Retry after 5 seconds
+			setTimeout(() => setupDatabase(), 5000);
 		});
-	})
-	.catch((err: any) => {
-		errorLogger.error(err.stack);
-	});
+}
+
+setupDatabase();
