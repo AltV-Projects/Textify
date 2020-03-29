@@ -15,9 +15,11 @@ services:
     ports:
       - "8181:8181"
     volumes:
-      - ./server/logs:/app/logs
+      - ./server/data/logs:/app/logs
   database:
     image: mysql:5.7.29
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: textify
+    volumes:
+      - ./server/data/db:/var/lib/mysql
