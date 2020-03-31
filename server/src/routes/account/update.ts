@@ -18,7 +18,7 @@ router.put('/update', async (req: Request, res: Response) => {
 
 	// Check if the token is set
 	if (isUndefined(token))
-		return res.status(400).send({
+		return res.status(400).json({
 			Error: {
 				Messages: [{ msg: 'Missing "token" in header information' }],
 			},
@@ -28,7 +28,7 @@ router.put('/update', async (req: Request, res: Response) => {
 	const tokenCheck = (await helper.isTokenValid(token, true)) as Token;
 	// If it's not, send a 403 error
 	if (!tokenCheck)
-		return res.status(403).send({
+		return res.status(403).json({
 			Error: {
 				Messages: [{ msg: "The given token isn't authorized" }],
 			},
@@ -91,7 +91,7 @@ router.put('/update', async (req: Request, res: Response) => {
 		updateParams['bio'] = req.body ? req.body.bio : undefined;
 
 		if (Object.keys(updateParams).length === 0)
-			return res.status(400).send({
+			return res.status(400).json({
 				Error: {
 					Messages: [{ msg: 'No changes were provided' }],
 				},

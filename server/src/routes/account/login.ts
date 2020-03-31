@@ -100,7 +100,7 @@ router.post(
 			if (!created) await token.update({ validUntil: timeout });
 
 			// Send back success message
-			return res.status(200).send({
+			return res.status(200).json({
 				data: {
 					token: token.token,
 					validUntil: token.validUntil,

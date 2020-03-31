@@ -11,7 +11,7 @@ router.get('/check', async (req: Request, res: Response) => {
 
 	// Check if the token is set
 	if (isUndefined(token))
-		return res.status(400).send({
+		return res.status(400).json({
 			Error: {
 				Messages: [{ msg: 'Missing "token" in header information' }],
 			},
@@ -22,14 +22,14 @@ router.get('/check', async (req: Request, res: Response) => {
 
 	// If it's not, send a 403 error
 	if (!tokenInfo)
-		return res.status(403).send({
+		return res.status(403).json({
 			Error: {
 				Messages: [{ msg: "The given token isn't authorized" }],
 			},
 		});
 
 	// Send back token information
-	return res.status(200).send({
+	return res.status(200).json({
 		data: tokenInfo,
 	});
 });
