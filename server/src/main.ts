@@ -76,7 +76,9 @@ function setupDatabase(): void {
 			db.sequelize.sync().then(() => {
 				// Set up all routes to be monitored
 				app.all('*', (req: Request, res: Response, next: NextFunction) => {
-					basicLogger.info(`[${req.method} - ${req.ip}] ${req.originalUrl}`);
+					basicLogger.info(
+						`[${req.method} - ${req.connection.remoteAddress}] ${req.originalUrl}`,
+					);
 					next();
 				});
 
