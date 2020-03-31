@@ -1,0 +1,25 @@
+version: "3.1"
+services:
+  backend-server:
+    image: textify/backend:latest
+    build:
+      context: ./server
+    environment:
+      DB_USER: root
+      DB_PASS: root
+      DB_HOST: database
+      DB_DB: textify
+      NODE_ENV: production
+    # depends_on:
+    #   - "database"
+    ports:
+      - "8181:8181"
+    volumes:
+      - ./server/data/logs:/app/logs
+  database:
+    image: mysql:5.7.29
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: textify
+    volumes:
+      - ./server/data/db:/var/lib/mysql
