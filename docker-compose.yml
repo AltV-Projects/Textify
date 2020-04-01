@@ -23,3 +23,8 @@ services:
       MYSQL_DATABASE: textify
     volumes:
       - ./server/data/db:/var/lib/mysql
+  frontend:
+    build:
+      context: ./client
+    ports:
+      - "80:80"
